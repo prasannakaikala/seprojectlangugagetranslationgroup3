@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speech-to-Text Conversion</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('/static/homepage.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #container {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+    select, textarea, button {
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 16px;
+      width: 90%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Speech-to-Text Conversion</h1>
+    <button id="startBtn">Start Recording</button>
+    <button id="stopBtn" style="display: none;">Stop Recording</button>
+    <select id="inputLanguage">
+      <option value="en-US">English (US)</option>
+      <option value="es-ES">Spanish (Spain)</option>
+      <option value="ja-JP">Japanese</option>
+      <option value="zh-CN">Chinese (Simplified)</option>
+      <option value="hi-IN">Hindi</option>
+    </select>
+    <select id="outputLanguage">
+      <option value="en">English</option>
+      <option value="es">Spanish</option>
+      <option value="ja">Japanese</option>
+      <option value="zh-CN">Chinese (Simplified)</option>
+      <option value="hi">Hindi</option>
+    </select>
+    <textarea id="spoken-text" placeholder="Click the microphone to speak"></textarea>
+    <button id="translate-btn">Translate</button>
+    <h3>Translated Text:</h3>
+    <div id="translated-result"></div>
+    <button id="logoutBtn">Logout</button>
+  </div>
+
+  <script>
+    const apiKey = 'AIzaSyBwYmHfPQ-kKbMf4ZJBtLTcSj2xU5YfOX4';  // Use your API Key here
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const spokenText = document.getElementById('spoken-text');
+    const translationResult = document.getElementById('translated-result');
+    const inputLanguageSelect = document.getElementById('inputLanguage');
+    const outputLanguageSelect = document.getElementById('outputLanguage');
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    startBtn.addEventListener('click', () => {
+      recognition.lang = inputLanguageSelect.value;
+      recognition.start();
+      startBtn.style.display = 'none';
+      stopBtn.style.display = 'block';
+      translationResult.textContent = '';
+    });
+
+    stopBtn.addEventListener('click', () => {
+      recognition.stop();
+      startBtn.style.display = 'block';
+      stopBtn.style.display = 'none';
+    });
+
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map(result => result[0].transcript)
+        .join('');
+      spokenText.value = transcript;
+    };
+
+    document.getElementById('translate-btn').addEventListener('click', () => {
+      const textToTranslate = spokenText.value;
+      const targetLanguage = outputLanguageSelect.value;
+      translateText(textToTranslate, targetLanguage);
+    });
+
+    function translateText(text, targetLanguage) {
+      const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+      const data = {
+        q: text,
+        target: targetLanguage
+      };
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.data && data.data.translations) {
+          translationResult.textContent = data.data.translations[0].translatedText;
+        }
+      })
+      .catch(error => {
+        console.error('Error during translation:', error);
+        translationResult.textContent = 'Translation failed: ' + error.message;
+      });
+    }
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error detected: ', event.error);
+    };
+
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.location.href = '/login'; // Redirect to the logout route
+    });
+  </script>
+</body>
+</html>

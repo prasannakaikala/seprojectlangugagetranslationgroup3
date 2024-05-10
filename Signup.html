@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up</title>
+<style>
+  body {
+    background-image: url('/static/finimage.jpg');
+    background-size: cover;
+    background-position: right;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Set body height to viewport height */
+  }
+
+  h1 {
+    text-align: center;
+    margin-left: 900px;
+  }
+
+  form {
+    width: 300px;
+    padding: 20px; /* Increased padding for better appearance */
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 900px; /* Adjusted margin to move the form to the right */
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: lightblue;
+    border: none;
+    border-radius: 10px; /* Adjusted border radius for consistency */
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  button:hover {
+    background-color: skyblue;
+  }
+
+  a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: blue;
+    margin-top: 10px;
+    margin-left: 900px;
+  }
+</style>
+</head>
+<body>
+    <div>
+        <h1>Sign Up</h1>
+        <form method="POST">
+            Username: <input type="text" name="username" required>
+            Password: <input type="password" name="password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+</body>
+</html>

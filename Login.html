@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<style>
+  body {
+    background-image: url('/static/Loginimage2.jpg');
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: auto;
+    margin-top: 100px;
+    text-align: center;
+    opacity: 0; /* Start with opacity 0 to make the form invisible */
+    animation: slideInFromTop 0.5s forwards; /* Apply the slide-in animation */
+  }
+
+  @keyframes slideInFromTop {
+    from {
+      transform: translateY(-50px); /* Start 50px above its normal position */
+      opacity: 0; /* Start invisible */
+    }
+    to {
+      transform: translateY(0); /* Slide to its normal position */
+      opacity: 1; /* Fade in */
+    }
+  }
+
+  .container h1 {
+    margin-bottom: 20px;
+  }
+
+  .container input[type="text"],
+  .container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  .container button {
+    width: 100%;
+    padding: 10px;
+    background-color: lightblue;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .container button:hover {
+    background-color: skyblue;
+  }
+
+  .container a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: blue;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form method="POST">
+            Username: <input type="text" name="username" required>
+            Password: <input type="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <a href="{{ url_for('signup') }}">signup</a>
+    </div>
+</body>
+</html>
